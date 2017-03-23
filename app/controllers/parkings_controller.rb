@@ -7,7 +7,14 @@ class ParkingsController < ApplicationController
 
   # step 2: create a parking, record start_at
   def create
-    @parking = Parking.new(parking_type: "guest", start_at: Time.now)
+    @parking = Parking.new( start_at: Time.now )
+
+    if current_user
+      @parking.parking_type = params[:parking][:parking_type]
+    else
+      @parking.parking_type = "guest"
+    end
+    
     @parking.save!
     redirect_to parking_path(@parking)
   end
